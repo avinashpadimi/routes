@@ -17,8 +17,22 @@ RSpec.describe Api::Controllers::Shipping::Routes do
         subject
         expect(last_response.status).to eq(404)
         resp = parse_body(last_response.body)
-        expect(resp.dig(:error,:code)).to eq("route_not_found")
+        expected_resp = [{ code: 404, detail: "url not found" }]
+        expect(resp[:errors]).to match_array(expected_resp)
       end
+    end
+  end
+
+  RSpec.shared_examples "invalid params" do
+    it "return bad_request" do
+      subject
+      expect(last_response.status).to eq(422)
+      resp_body = parse_body(last_response.body)
+      expected_errors = [{
+        code: 400,
+        detail: "required parameters are missing or invalid"
+      }]
+      expect(resp_body[:errors]).to match_array(expected_errors)
     end
   end
 
@@ -40,7 +54,7 @@ RSpec.describe Api::Controllers::Shipping::Routes do
         destination: destination
       }
     end
-    subject { get '/cheapest', params: params }
+    subject { get '/cheapest', params }
 
     context "given wrong origin port" do
       let(:origin) {"NO12"}
@@ -55,13 +69,13 @@ RSpec.describe Api::Controllers::Shipping::Routes do
     context "given valid origin & destination port" do
       it "return cheapest route" do
         subject
-        expect(last_response).to eq(200)
+        expect(last_response.status).to eq(200)
         resp_body = parse_body(last_response.body)
         expected_resp = [{
           origin_port: "CNSHA",
           destination_port: "ESBCN",
           departure_date: "2022-01-29",
-          arrival_date: "2022-02-06",
+          arrival_date: "2022-02-12",
           sailing_code: "ERXQ",
           rate: "261.96",
           rate_currency: "EUR"
@@ -81,30 +95,45 @@ RSpec.describe Api::Controllers::Shipping::Routes do
   end
 
   describe "#cheapest_direct" do
+    let(:origin) { "CNSHA" }
+    let(:destination) { "NLRTM" }
+    let(:params) do
+      {
+        origin: origin,
+        destination: destination
+      }
+    end
+    subject { get '/cheapest/direct', params }
     context "given wrong origin port" do
+      let(:destination) {"NOTFD"}
       include_examples "wrong port"
     end
 
     context "given wrong destination port" do
+      let(:origin) {"NOTFD"}
       include_examples "wrong port"
+    end
+
+    context "given invalid params" do
+      let(:origin) {""}
+      include_examples "invalid params"
     end
 
     context "given valid origin & destination port" do
       it "return cheapest direct route" do
         subject
-        expect(last_response).to eq(200)
+        expect(last_response.status).to eq(200)
         resp_body = parse_body(last_response.body)
         expected_resp = [{
           origin_port: "CNSHA",
           destination_port: "NLRTM",
-          departure_date: "2022-02-01",
-          arrival_date: "2022-03-01",
-          sailing_code: "ABCD",
-          rate: "589.30",
+          departure_date: "2022-01-30",
+          arrival_date: "2022-03-05",
+          sailing_code: "MNOP",
+          rate: "456.78",
           rate_currency: "USD"
         }]
         expect(resp_body[:data]).to match_array(expected_resp)
-
       end
     end
   end
