@@ -1,28 +1,29 @@
-class ShippingRate
-  @rates = nil
-  attr_accessor :code, :rate, :currency
+# frozen_string_literal: true
 
-  def initialize rate
+class ShippingRate
+  attr_reader :code, :rate, :currency
+
+  def initialize(rate)
     @code = rate[:sailing_code]
     @rate = rate[:rate]
     @currency = rate[:rate_currency]
   end
 
   class << self
-    def rates
-      @rates
-    end
+    attr_reader :rates
 
-    def generate rates
-      @rates ||= rates.map do |rate|
-        new(rate)
-      end
+    def seed(rates)
+      @rates = rates.map { |rate| new(rate) }
     end
 
     def by_code
-      @rates.each_with_object({}) do |rate, obj|
+      rates.each_with_object({}) do |rate, obj|
         obj[rate.code] = rate
       end
+    end
+
+    def clear
+      @rates = nil
     end
   end
 end

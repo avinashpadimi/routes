@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../handlers/exchange_handler'
 module Api
   module Services
@@ -5,15 +7,18 @@ module Api
       class Handler
         include ::Api::Services::Handlers::ExchangeHandler
 
-        EURO = "EUR".freeze
-        USD = "USD".freeze
-        JPY = "JPY".freeze
+        EUR = 'EUR'
+        USD = 'USD'
+        JPY = 'JPY'
 
-        def in_euros(date,currency,amount)
-          case currency
-          when EURO then amount
-          when USD,JPY then amount / ::Exchange.rate(date,currency)
-          end
+        def in_euros(date, currency, amount)
+          value = case currency
+                  when EUR then amount
+                  when USD, JPY then amount / ::Exchange.rate(date, currency)
+                  else
+                    amount
+                  end
+          value.round(3)
         end
       end
     end

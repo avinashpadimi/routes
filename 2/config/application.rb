@@ -1,4 +1,6 @@
-ROOT_DIR = File.dirname(File.expand_path('..', __FILE__)).freeze
+# frozen_string_literal: true
+
+ROOT_DIR = File.dirname(File.expand_path('__dir__'))
 
 (Dir[
   './app/models/**/*.rb',
@@ -7,4 +9,4 @@ ROOT_DIR = File.dirname(File.expand_path('..', __FILE__)).freeze
   './app/helpers/**/*.rb',
   './app/controllers/**/*.rb',
   './config/initializers/**/*.rb'
-]).uniq.each {|rb| require rb}
+]).uniq.each { |rb| require rb }

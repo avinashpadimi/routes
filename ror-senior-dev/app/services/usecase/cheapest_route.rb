@@ -1,4 +1,7 @@
-require_relative "./base"
+# frozen_string_literal: true
+
+require_relative './base'
+
 module Api
   module Services
     module Usecase
@@ -6,13 +9,13 @@ module Api
         private
 
         def call
-          handler.cheapest_route(routes) do |date,currency,amount|
-            exchange_handler.in_euros(date,currency,amount)
+          handler.cheapest_route(routes) do |date, currency, amount|
+            exchange_handler.in_euros(date, currency, amount)
           end
         end
 
         def routes
-          @routes ||= handler.routes(params[:origin],params[:destination])
+          @routes ||= handler.routes(params[:origin], params[:destination])
         end
       end
     end

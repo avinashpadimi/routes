@@ -1,12 +1,15 @@
+# frozen_string_literal: true
+
 module Api
   module Serializers
     class ShippingRoute
       attr_accessor :routes
-      def initialize routes
+
+      def initialize(routes)
         @routes = routes
       end
 
-      def self.serialize routes
+      def self.serialize(routes)
         new(routes).execute
       end
 
@@ -20,11 +23,13 @@ module Api
             sailing_code: route.code
           }
 
-          if !route.shipping_rate.nil?
-            hash.merge!({
-              rate: route.shipping_rate.rate,
-              rate_currency: route.shipping_rate.currency
-            })
+          unless route.shipping_rate.nil?
+            hash.merge!(
+              {
+                rate: route.shipping_rate.rate,
+                rate_currency: route.shipping_rate.currency
+              }
+            )
           end
           hash
         end
@@ -34,5 +39,3 @@ module Api
     end
   end
 end
-
-

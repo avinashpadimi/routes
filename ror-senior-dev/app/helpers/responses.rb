@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module Api
   module Helpers
     module Responses
-      def success data
-        halt 200, { data: data }.to_json
+      def success(data)
+        halt(200, { data: data }.to_json)
       end
     end
   end

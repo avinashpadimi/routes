@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'sinatra/base'
 
 module Api
@@ -10,10 +12,10 @@ module Api
         enable :raise_errors
         enable :logging unless test?
       end
-      before {content_type(:json)}
+      before { content_type(:json) }
 
       error Sinatra::NotFound do
-        not_found([{code: :not_found}])
+        not_found([{ code: :not_found }])
       end
     end
   end

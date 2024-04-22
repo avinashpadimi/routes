@@ -1,17 +1,19 @@
+# frozen_string_literal: true
+
 module Api
   module Helpers
     module Errors
-      def not_found errors
-        halt 404, error(errors)
+      def not_found(errors)
+        halt(404, error(errors))
       end
 
-      def unprocessiable errors
-        halt 422, error(errors)
+      def unprocessiable(errors)
+        halt(422, error(errors))
       end
 
       private
-      
-      def error errors
+
+      def error(errors)
         {
           errors: errors.map do |error|
             {
@@ -22,7 +24,7 @@ module Api
         }.to_json
       end
 
-      def fetch_code code
+      def fetch_code(code)
         case code
         when :bad_request then 400
         when :not_found then 404
@@ -32,16 +34,15 @@ module Api
         end
       end
 
-      def detail code
+      def detail(code)
         case code
-        when :bad_request then "required parameters are missing or invalid"
-        when :not_found then "url not found"
-        when :internal_server_error then "internal server error"
+        when :bad_request then 'required parameters are missing or invalid'
+        when :not_found then 'url not found'
+        when :internal_server_error then 'internal server error'
         else
-          "internal server error"
+          'internal server error'
         end
       end
     end
   end
 end
-
