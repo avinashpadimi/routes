@@ -18,8 +18,8 @@ module Api
           hash = {
             origin_port: route.origin,
             destination_port: route.destination,
-            departure_date: route.dep_date,
-            arrival_date: route.arr_date,
+            departure_date: route.dep_date.to_s,
+            arrival_date: route.arr_date.to_s,
             sailing_code: route.code
           }
 

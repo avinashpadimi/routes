@@ -16,6 +16,10 @@ module Api
           raise_error
         end
 
+        def fastest_route(_origin, _destination)
+          raise_error
+        end
+
         def raise_error
           raise NotImplementedError, "#{self.class} has not implemented method #{__method__}"
         end

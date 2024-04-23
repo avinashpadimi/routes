@@ -3,6 +3,7 @@
 ROOT_DIR = File.dirname(File.expand_path('__dir__'))
 
 (Dir[
+  './lib/middlewares/**/*.rb',
   './app/models/**/*.rb',
   './app/Serializers/**/*.rb',
   './app/services/**/*.rb',

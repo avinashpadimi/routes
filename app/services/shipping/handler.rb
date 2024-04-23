@@ -25,7 +25,16 @@ module Api
           routes.min_by { |route| accumulate_rate(route, &block) }
         end
 
+        def fastest_route(routes)
+          routes.min_by { |route| accumulate_time(route) }
+        end
+
         private
+
+        def accumulate_time(routes)
+          routes = [routes].flatten
+          (routes.last.arr_date - routes.first.dep_date).to_i
+        end
 
         def accumulate_rate(routes, &block)
           [routes]

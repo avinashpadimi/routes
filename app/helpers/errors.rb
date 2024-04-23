@@ -11,6 +11,10 @@ module Api
         halt(422, error(errors))
       end
 
+      def internal_server_error(errors)
+        halt(500, error(errors))
+      end
+
       private
 
       def error(errors)
@@ -38,7 +42,7 @@ module Api
         case code
         when :bad_request then 'required parameters are missing or invalid'
         when :not_found then 'url not found'
-        when :internal_server_error then 'internal server error'
+        when :internal_server_error, :failure then 'internal server error'
         else
           'internal server error'
         end

@@ -19,6 +19,9 @@ module Api
         end
 
         get '/fastest' do
+          resp = Api::Services::Usecase::FastestRoute.execute(shipping_handler, nil, params)
+          unprocessiable(resp.errors) unless resp.errors.empty?
+          success(serialize(resp.data))
         end
 
         private

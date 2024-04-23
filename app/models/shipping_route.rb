@@ -6,8 +6,8 @@ class ShippingRoute
   def initialize(route, shipping_rate)
     @origin = route[:origin_port]
     @destination = route[:destination_port]
-    @dep_date = route[:departure_date]
-    @arr_date = route[:arrival_date]
+    @dep_date = Date.parse(route[:departure_date])
+    @arr_date = Date.parse(route[:arrival_date])
     @code = route[:sailing_code]
     @shipping_rate = shipping_rate
   end

@@ -13,7 +13,7 @@ class Exchange
     attr_reader :rates
 
     def rate(date, currency)
-      ex_rate = Exchange.rates.find { |rate| rate.date == date && rate.currency == currency }
+      ex_rate = Exchange.rates.find { |rate| rate.date == date.to_s && rate.currency == currency }
       return Float::INFINITY if ex_rate.nil?
 
       ex_rate.rate

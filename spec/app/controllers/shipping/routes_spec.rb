@@ -140,4 +140,48 @@ RSpec.describe Api::Controllers::Shipping::Routes do
       end
     end
   end
+
+  describe '#fastest_route' do
+    let(:origin) { 'CNSHA' }
+    let(:destination) { 'NLRTM' }
+    let(:params) do
+      {
+        origin: origin,
+        destination: destination
+      }
+    end
+    subject { get '/fastest', params }
+    context 'given wrong origin' do
+      let(:destination) { 'NOTFD' }
+      include_examples 'not valid code'
+    end
+
+    context 'given wrong destination' do
+      let(:origin) { 'NOTFD' }
+      include_examples 'not valid code'
+    end
+
+    context 'given invalid params' do
+      let(:origin) { '' }
+      include_examples 'invalid params'
+    end
+
+    context 'given valid params' do
+      it 'return fastest route' do
+        subject
+        expect(last_response.status).to eq(200)
+        resp_body = parse_body(last_response.body)
+        expected_resp = [{
+          origin_port: 'CNSHA',
+          destination_port: 'NLRTM',
+          departure_date: '2022-01-29',
+          arrival_date: '2022-02-15',
+          sailing_code: 'QRST',
+          rate: '761.96',
+          rate_currency: 'EUR'
+        }]
+        expect(resp_body[:data]).to match_array(expected_resp)
+      end
+    end
+  end
 end
