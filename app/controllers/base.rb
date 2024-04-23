@@ -19,10 +19,6 @@ module Api
       error Sinatra::NotFound do
         not_found([{ code: :not_found }])
       end
-
-      error 500 do
-        internal_server_error([{ code: :internal_server_error}])
-      end
     end
   end
 end

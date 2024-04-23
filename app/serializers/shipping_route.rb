@@ -5,10 +5,6 @@ module Api
     class ShippingRoute
       attr_accessor :routes
 
-      def initialize(routes)
-        @routes = routes
-      end
-
       def self.serialize(routes)
         new(routes).execute
       end
@@ -36,6 +32,11 @@ module Api
       end
 
       private_class_method :new
+      private
+
+      def initialize(routes)
+        @routes = routes
+      end
     end
   end
 end
